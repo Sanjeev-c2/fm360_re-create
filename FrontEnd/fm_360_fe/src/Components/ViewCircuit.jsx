@@ -88,11 +88,12 @@ export default function ViewCircuit() {
         edges={edges}
         // onNodesChange={onNodesChange}
         // onEdgesChange={onEdgesChange}
+       
         onConnect={onConnect}
         fitView
         nodeTypes={{ custom: CustomNode }}
       >
-        <Controls />
+        <Controls/>
         <MiniMap />
         {/* <Background variant="dots" gap={12} size={1} /> */}
       </ReactFlow>

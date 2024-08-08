@@ -31,42 +31,42 @@ const Sidebar = () => {
           <img
             src={Resistor}
             alt="Node Image"
-            style={{ height: '30px', width: '30px' }}
+            style={{ height: '30px', width: '30px', cursor: 'move'}}
           />
         </div>
         <div className="dndnode default" onDragStart={(event) => onDragStart(event, 'custom',`${Switch}`)} draggable>
           <img
             src={Switch}
             alt="Node Image"
-            style={{ height: '30px', width: '30px' }}
+            style={{ height: '30px', width: '30px', cursor: 'move' }}
           />
         </div>
         <div className="dndnode default" onDragStart={(event) => onDragStart(event, 'custom',`${Inductor}`)} draggable>
           <img
             src={Inductor}
             alt="Node Image"
-            style={{ height: '30px', width: '30px' }}
+            style={{ height: '30px', width: '30px', cursor: 'move' }}
           />
         </div>
         <div className="dndnode default" onDragStart={(event) => onDragStart(event, 'custom',`${Battery}`)} draggable>
           <img
             src={Battery}
             alt="Node Image"
-            style={{ height: '30px', width: '30px' }}
+            style={{ height: '30px', width: '30px', cursor: 'move' }}
           />
         </div>
         <div className="dndnode default" onDragStart={(event) => onDragStart(event, 'custom',`${Resistor1}`)} draggable>
           <img
             src={Resistor1}
             alt="Node Image"
-            style={{ height: '30px', width: '30px' }}
+            style={{ height: '30px', width: '30px', cursor: 'move' }}
           />
         </div>
         <div className="dndnode default" onDragStart={(event) => onDragStart(event, 'custom',`${Earth}`)} draggable>
           <img
             src={Earth}
             alt="Node Image"
-            style={{ height: '30px', width: '30px' }}
+            style={{ height: '30px', width: '30px', cursor: 'move' }}
           />
         </div>
       </div>

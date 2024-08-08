@@ -135,7 +135,7 @@ const DnDFlow = () => {
       edges: transformedEdges,
     };
 
-    console.log(JSON.stringify(formattedData));
+    // console.log(JSON.stringify(formattedData));
 
       // // localStorage.setItem('nodes', JSON.stringify(nodes));
       // // localStorage.setItem('edges', JSON.stringify(edges));

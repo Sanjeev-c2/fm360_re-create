@@ -85,6 +85,7 @@ const ViewPage = ()=>{
       <ReactFlow
         nodes={nodes}
         edges={edges}
+        nodesConnectable={false}
         // onNodesChange={onNodesChange}
         // onEdgesChange={onEdgesChange}
         onConnect={onConnect}
