@@ -1,7 +1,7 @@
 .dndflow {
   display: flex;
   flex-direction: row; /* Keeps sidebar and main area in row layout */
-  height: 100vh;
+  height: max-content;
 }
 
 .dndflow aside {
