@@ -1,0 +1,12 @@
+.sidebar {
+    display: grid;
+    grid-template-columns: 90px 90px;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid black;
+    height: max-content;
+    background-color: rgb(246, 246, 246);
+}
+.sidebar .dndnode{
+    margin: 10px;
+}

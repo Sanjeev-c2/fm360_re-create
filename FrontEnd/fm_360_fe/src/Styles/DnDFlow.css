@@ -1,0 +1,78 @@
+.dndflow {
+  display: flex;
+  flex-direction: row; /* Keeps sidebar and main area in row layout */
+  height: 100vh;
+}
+
+.dndflow aside {
+  border-right: 1px solid #eee;
+  padding: 15px 10px;
+  font-size: 12px;
+  background: #fcfcfc;
+  width: 20%; /* Adjusted width for sidebar */
+  max-width: 250px; /* Ensures the sidebar does not grow too wide */
+  box-sizing: border-box; /* Ensure padding is included in the width */
+}
+
+.dndflow .reactflow-wrapper {
+  flex-grow: 1; /* Allows the React Flow area to fill the remaining space */
+  height: 100%;
+}
+
+.dndflow .selectall {
+  margin-top: 10px;
+}
+
+.dndflow .description {
+  margin-bottom: 10px;
+}
+
+.dndflow .dndnode {
+  height: 50px; /* Increased height for better visual appearance */
+  padding: 4px;
+  border: 1px solid #1a192b;
+  border-radius: 2px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: grab;
+  text-align: center; /* Center text in node */
+}
+
+.dndflow .dndnode.input {
+  border-color: #0041d0;
+}
+
+.dndflow .dndnode.output {
+  border-color: #ff0072;
+}
+
+/* Style for nodes in the sidebar to be displayed in a row */
+.dndflow aside div > div {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 10px; /* Space between nodes */
+}
+
+.dndflow aside .dndnode {
+  flex: 1 0 30%; /* 3 items per row */
+}
+
+.reactflow-wrapper #btn button{
+  position: absolute;
+  right: 100px;
+  padding: 7px 15px;
+  background-color: red;
+  color: white;
+  border: 1px solid red;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+@media screen and (min-width: 768px) {
+  .dndflow {
+    flex-direction: row;
+  }
+}

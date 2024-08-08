@@ -1,0 +1,45 @@
+.landingpage{
+    display: flex;
+    justify-content: space-between;
+}
+.landingpage #img img{
+   height: 100vh;
+   width: 150%;
+    
+}
+#container{
+    position: absolute;
+    top: 25%;
+    right: 10%;
+}
+#container h2{
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+#container form{
+    display: grid;
+    grid-template-columns: 300px;
+    border: 1px solid white;
+    background-color: white;
+    width: max-content;
+    padding: 20px;
+    justify-content: center;
+    align-items: center;
+}
+#container form input{
+    margin: 10px 0;
+    padding: 10px;
+    border: none;
+    border-bottom: 1px solid black;
+    outline: none;
+}
+#container form button{
+    border: 1px solid red;
+    background-color: red;
+    border-radius: 7px;
+    padding: 5px;
+    width: 40%;
+    color: white;
+    position: relative;
+    left: 100px;
+    margin: 15px 0;
+}
