@@ -43,10 +43,25 @@ export default function ViewCircuit() {
             // const data = localStorage.getItem('data');
             axios.get('http://localhost:8000/api/flow/')
             .then((res)=> {
-              // const parsedData = JSON.parse(res.data);
-              // setNodes(parsedData.nodes);
-              setNodes(res.data.nodes);
-              setEdges(res.data.edges);
+              // Transform data back to the format expected by React Flow
+          const transformedNodes = res.data.nodes.map(node => ({
+            id: node.node_id,  // Convert node_id to id
+            type: node.type,
+            position: node.position,
+            data: node.data,
+            measured: node.measured,
+          }));
+
+          const transformedEdges = res.data.edges.map(edge => ({
+            id: edge.edge_id,  // Convert edge_id to id
+            source: edge.source,
+            target: edge.target,
+            type: edge.type,
+          }));
+
+          // Update state with transformed data
+          setNodes(transformedNodes);
+          setEdges(transformedEdges);
           })
            .catch((err)=>{
             console.log(err);
@@ -67,7 +82,7 @@ export default function ViewCircuit() {
   );
  
   return (
-    <div style={{ width: '100vw', height: '80vh' }} >
+    <div className='viewcircuit' style={{ width: '100vw', height: '80vh'}} >
       <ReactFlow
         nodes={nodes}
         edges={edges}
@@ -77,8 +92,8 @@ export default function ViewCircuit() {
         fitView
         nodeTypes={{ custom: CustomNode }}
       >
-        {/* <Controls /> */}
-        {/* <MiniMap /> */}
+        <Controls />
+        <MiniMap />
         {/* <Background variant="dots" gap={12} size={1} /> */}
       </ReactFlow>
       

@@ -13,14 +13,22 @@ import '@xyflow/react/dist/style.css';
 
 import Sidebar from './Sidebar';
 import CustomNode from './CustomNodes'; // Import the custom node component
-// import CustomStepEdge from './CustomstepEdge'; // Import your custom edge component
 import '../Styles/DnDFlow.css';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const initialNodes = [];
 let id = 0;
-const getId = () => `dndnode_${id++}`;
+const getId = () => generateUUID();
+
+function generateUUID() {
+  // Create a UUID based on version 4 (random)
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    var r = Math.random() * 16 | 0,
+        v = c === 'x' ? r : (r & 0x3 | 0x8);
+    return v.toString(16);
+  });
+}
 
 const DnDFlow = () => {
   const reactFlowWrapper = useRef(null);
@@ -28,11 +36,10 @@ const DnDFlow = () => {
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const { screenToFlowPosition } = useReactFlow();
 
-  let data = {
-    nodes: nodes,
-    edges: edges
-};
-
+//   let data = {
+//     nodes: nodes,
+//     edges: edges
+// };
 
   const onConnect = useCallback(
     (params) => {
@@ -105,13 +112,37 @@ const DnDFlow = () => {
   let navigate = useNavigate('')
 
   function save() {
+
+     // Transform nodes and edges to the required format
+     const transformedNodes = nodes.map(node => ({
+      node_id: node.id,
+      data: node.data,
+      measured: node.measured,
+      position: node.position,
+      type: node.type,
+    }));
+
+    const transformedEdges = edges.map(edge => ({
+      edge_id: edge.id,
+      source: edge.source,
+      target: edge.target,
+      type: edge.type,
+    }));
+
+    // Construct the data object in the required format
+    const formattedData = {
+      nodes: transformedNodes,
+      edges: transformedEdges,
+    };
+
+    console.log(JSON.stringify(formattedData));
+
       // // localStorage.setItem('nodes', JSON.stringify(nodes));
       // // localStorage.setItem('edges', JSON.stringify(edges));
       //  localStorage.setItem('data', JSON.stringify(data));
-      console.log(JSON.stringify(data));
+      // console.log(JSON.stringify(data));
       
-
-      axios.post('http://localhost:8000/api/flow/save/',JSON.stringify(data))
+      axios.post('http://localhost:8000/api/flow/save/',formattedData)
       .then((res)=>{
         console.log(res.data);
         navigate('/admindashboard/view')

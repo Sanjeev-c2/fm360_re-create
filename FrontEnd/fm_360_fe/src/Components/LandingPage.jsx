@@ -37,7 +37,7 @@ const LandingPage = () =>{
                 <><input type="password" placeholder='Enter the password' required
                 value={password} onChange={(e)=>{setpassword(e.target.value)}}/></>
                 <><button>Login</button></>
-                <><a href="">forgot password?</a></> 
+                <><a href="/forgotpassword">forgot password?</a></> 
                 <p>Are you new to the page? <a href="/adminsignup">Admin Signup</a> <a href="/usersignup">User Signup</a></p>
             </form>
         </div>

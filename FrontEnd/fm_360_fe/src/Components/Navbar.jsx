@@ -17,8 +17,8 @@ const Navbar = ()=>{
       </Dropdown.Toggle>
 
       <Dropdown.Menu>
-        <Dropdown.Item href="/admindashboard/view">View</Dropdown.Item>
-        <Dropdown.Item href="/userdashboard">User</Dropdown.Item>
+        {/* <Dropdown.Item href="/admindashboard/view">Admin View</Dropdown.Item> */}
+        <Dropdown.Item href="/userdashboard">User View</Dropdown.Item>
         <Dropdown.Item href="/">Logout</Dropdown.Item>
       </Dropdown.Menu>
     </Dropdown>
