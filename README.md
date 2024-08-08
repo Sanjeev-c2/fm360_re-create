@@ -22,4 +22,5 @@ Create a List page that shows all the created circuit diagrams
 Permissions - Admin, User
 -------------------------
 Admin should be able to perform all activites.
+
 User should be able to view the screens alone.
