@@ -1,45 +1,40 @@
-from django.shortcuts import render
+from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from rest_framework import status
-from .models import Node, Edge
-from .serializers import NodeSerializer, EdgeSerializer
-
-
-# Create your views here.
-
-@api_view(['GET'])
-def get_flow(request):
-    nodes = Node.objects.all()
-    edges = Edge.objects.all()
-    node_serializer = NodeSerializer(nodes, many=True)
-    edge_serializer = EdgeSerializer(edges, many=True)
-    return Response({
-        "nodes": node_serializer.data,
-        "edges": edge_serializer.data
-    })
+from .models import Flow
+from .serializers import FlowSerializer
 
 @api_view(['POST'])
 def save_flow(request):
-    nodes_data = request.data.get('nodes', [])
-    edges_data = request.data.get('edges', [])
-    
-    # # Delete existing data
-    # Node.objects.all().delete()
-    # Edge.objects.all().delete()
-    
-    # Create new nodes
-    node_serializer = NodeSerializer(data=nodes_data, many=True)
-    if node_serializer.is_valid():
-        node_serializer.save()
-    else:
-        return Response(node_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    serializer = FlowSerializer(data=request.data)
+    if serializer.is_valid():
+        # Check if a flow with the same name already exists
+        flow, created = Flow.objects.update_or_create(
+            name=serializer.validated_data['name'],
+            defaults={
+                'nodes': serializer.validated_data['nodes'],
+                'edges': serializer.validated_data['edges'],
+            }
+        )
+        if created:
+            return Response({'message': 'Data Saved!!!'}, status=status.HTTP_201_CREATED)
+        else:
+            return Response({'message': 'Data Updated!!!'}, status=status.HTTP_200_OK)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    # Create new edges
-    edge_serializer = EdgeSerializer(data=edges_data, many=True)
-    if edge_serializer.is_valid():
-        edge_serializer.save()
-    else:
-        return Response(edge_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+def list_flow_names(request):
+    flows = Flow.objects.all()  # Retrieve all flow objects
+    names = [flow.name for flow in flows]  # Extract names
+    return Response(names, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def get_flow(request, name):
+    try:
+        flow = Flow.objects.get(name=name)
+    except Flow.DoesNotExist:
+        return Response({'error': 'Not Found'}, status=status.HTTP_404_NOT_FOUND)
     
-    return Response({"status": "flow data saved"}, status=status.HTTP_201_CREATED)
+    serializer = FlowSerializer(flow)
+    return Response(serializer.data, status=status.HTTP_200_OK)

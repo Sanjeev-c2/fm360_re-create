@@ -35,21 +35,15 @@ const DnDFlow = () => {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const { screenToFlowPosition } = useReactFlow();
-
-//   let data = {
-//     nodes: nodes,
-//     edges: edges
-// };
+  const [name, setName] = useState(''); // State to store the name for saving
+  const navigate = useNavigate();
 
   const onConnect = useCallback(
     (params) => {
-      // Create a new edge with the custom type property
       const newEdge = {
         ...params,
         type: 'step', // Add your custom property here
       };
-
-      // Update the edges state with the new edge
       setEdges((eds) => addEdge(newEdge, eds));
     },
     [] // Dependencies array, empty means it doesn't depend on any external variables
@@ -60,61 +54,37 @@ const DnDFlow = () => {
     event.dataTransfer.dropEffect = 'move';
   }, []);
 
-  // const [imageUrl, setImageUrl] = useState('');
-               
-  //     useEffect(() => {
-
-  //       const storedImageUrl = localStorage.getItem('draggedImage');
-  //       if (storedImageUrl) {
-  //           setImageUrl(storedImageUrl);
-  //       }
-  //   }, []);
-
   const onDrop = useCallback(
     (event) => {
       event.preventDefault();
-
       const data = JSON.parse(event.dataTransfer.getData('application/reactflow'));
-
-  if (!data || !data.type) {
-    return;
-  }
-
+      if (!data || !data.type) {
+        return;
+      }
       const position = screenToFlowPosition({
         x: event.clientX,
         y: event.clientY,
       });
-
       const newNode = {
         id: getId(),
         type: data.type,
         position,
         data: { image: data.imageUrl }, // Default image if none provided
       };
-
       setNodes((nds) => nds.concat(newNode));
     },
     [screenToFlowPosition]
   );
 
-   // Load state from local storage or initialize
-  //  useEffect(() => {
-  //   const savedNodes = localStorage.getItem('nodes');
-  //   const savedEdges = localStorage.getItem('edges');
-  //   if (savedNodes) {
-  //     setNodes(JSON.parse(savedNodes));
-  //   }
-  //   if (savedEdges) {
-  //     setEdges(JSON.parse(savedEdges));
-  //   }
-  // }, [setNodes, setEdges]);
+  const save = () => {
+    // Validate that the name field is not empty
+    if (!name.trim()) {
+      alert('Please enter a name for the data.');
+      return;
+    }
 
-  let navigate = useNavigate('')
-
-  function save() {
-
-     // Transform nodes and edges to the required format
-     const transformedNodes = nodes.map(node => ({
+    // Transform nodes and edges to the required format
+    const transformedNodes = nodes.map(node => ({
       node_id: node.id,
       data: node.data,
       measured: node.measured,
@@ -131,54 +101,62 @@ const DnDFlow = () => {
 
     // Construct the data object in the required format
     const formattedData = {
+      name: name, // Include the name in the data
       nodes: transformedNodes,
       edges: transformedEdges,
     };
+    console.log(formattedData);
+    
 
-    // console.log(JSON.stringify(formattedData));
-
-      // // localStorage.setItem('nodes', JSON.stringify(nodes));
-      // // localStorage.setItem('edges', JSON.stringify(edges));
-      //  localStorage.setItem('data', JSON.stringify(data));
-      // console.log(JSON.stringify(data));
-      
-      axios.post('http://localhost:8000/api/flow/save/',formattedData)
-      .then((res)=>{
+    axios.post('http://localhost:8000/api/flow/save/', formattedData)
+      .then((res) => {
         console.log(res.data);
-        navigate('/admindashboard/view')
-        alert("Data Saved!!!")
+        navigate('/admindashboard/view');
+        alert('Data Saved!!!');
       })
-      .catch((err)=>{
+      .catch((err) => {
         console.log(err);
-        alert('Not Saved!!!')
-      })
-      
-  }
+        alert('Not Saved!!!');
+      });
+  };
 
+  const handleNameChange = (event) => {
+    setName(event.target.value);
+  };
 
-return (
-  <div className="dndflow">
-    <Sidebar />
-    <div className="reactflow-wrapper" ref={reactFlowWrapper} style={{ height: 500 }}>
-      <ReactFlow
-        nodes={nodes}
-        edges={edges}
-        onNodesChange={onNodesChange}
-        onEdgesChange={onEdgesChange}
-        onConnect={onConnect}
-        onDrop={onDrop}
-        onDragOver={onDragOver}
-        fitView
-        nodeTypes={{ custom: CustomNode }} // Register the custom node type
-      >
-        <Controls />
-        {/* <MiniMap /> */}
-      </ReactFlow>
-      <div id='btn'><button onClick={save}>Save</button></div>
+  return (
+    <div className="dndflow">
+      <Sidebar />
+      <div className="reactflow-wrapper" ref={reactFlowWrapper} style={{ height: 500 }}>
+        <ReactFlow
+          nodes={nodes}
+          edges={edges}
+          onNodesChange={onNodesChange}
+          onEdgesChange={onEdgesChange}
+          onConnect={onConnect}
+          onDrop={onDrop}
+          onDragOver={onDragOver}
+          fitView
+          nodeTypes={{ custom: CustomNode }} // Register the custom node type
+        >
+          <Controls />
+          <MiniMap />
+        </ReactFlow>
+        <div id='btn'>
+          <form action="/admindashboard/view" onSubmit={save}>
+          <input
+            type="text"
+            placeholder="Enter circuit name"
+            value={name}
+            onChange={handleNameChange}
+            required
+          />
+          <button >Save</button>
+          </form>
+        </div>
+      </div>
     </div>
-
-  </div>
-);
+  );
 };
 
 export default () => (
